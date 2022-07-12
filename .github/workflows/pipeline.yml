@@ -30,6 +30,7 @@ jobs:
         env:
           NODE_ENV: test
           TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: Deploy to heroku
         if: ${{ github.event_name == 'push' && !contains( join(toJson(github.event.commits.*.message)), '#skip') }}
