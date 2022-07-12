@@ -20,13 +20,14 @@ mongoose
   });
 
 app.use(cors());
+app.use(express.static("./client/build"));
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
 
-app.get('/health', (req, res) => {
-  res.send('ok')
-})
+app.get("/health", (req, res) => {
+  res.send("ok");
+});
 
 app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);

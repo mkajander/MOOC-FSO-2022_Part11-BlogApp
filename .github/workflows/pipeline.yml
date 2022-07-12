@@ -22,15 +22,28 @@ jobs:
       - name: eslint
         run: npm run lint
 
-      - name: prettier
+      - name: prettier for all files not ignored
         run: npm run format
 
-      - name: test
+      - name: test backend -- if these fail testing front is pointless
         run: npm run test
         env:
           NODE_ENV: test
           TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
           SECRET: ${{ secrets.JWT_SECRET }}
+
+      - name: test frontend
+        run: npm run test:client
+
+      - name: e2e tests # test everything else first since these are long running
+        uses: cypress-io/github-action@v2
+        with:
+            command: npm run test:e2e
+            start: npm run start:test
+            wait-on: http://localhost:3003
+
+      - name: build
+        run: npm run build
 
       - name: Deploy to heroku
         if: ${{ github.event_name == 'push' && !contains( join(toJson(github.event.commits.*.message)), '#skip') }}

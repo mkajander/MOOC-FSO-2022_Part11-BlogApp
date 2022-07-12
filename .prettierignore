@@ -4,3 +4,5 @@ coverage
 .prettier*
 .eslintrc*
 .github
+client/node_modules
+client/public
