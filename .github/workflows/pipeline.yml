@@ -1,0 +1,37 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize]
+
+jobs:
+  deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: eslint
+        run: npm run lint
+
+      - name: prettier --write
+        run: npm run format
+
+      - name: Deploy to heroku
+        if: ${{ github.event_name == 'push' && !contains( join(toJson(github.event.commits.*.message)), '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          healthcheck: ${{ secrets.HEROKU_HEALTHCHECK }}
+          checkstring: "ok"
+          rollbackonhealthcheckfailed: true

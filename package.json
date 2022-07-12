@@ -8,7 +8,11 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
     "start:test": "cross-env NODE_ENV=test node index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended"
   },
   "author": "",
   "license": "ISC",
@@ -23,8 +27,10 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^8.18.0",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
     "jest": "^28.1.1",
+    "prettier": "2.7.1",
     "supertest": "^6.2.3"
   }
 }
