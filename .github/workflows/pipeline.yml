@@ -36,6 +36,6 @@ jobs:
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
         env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          NODE_ENV: production
-          SECRET: ${{ secrets.JWT_SECRET }}
+          HD_MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          HD_NODE_ENV: production
+          HD_SECRET: ${{ secrets.JWT_SECRET }}
