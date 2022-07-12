@@ -35,3 +35,7 @@ jobs:
           healthcheck: ${{ secrets.HEROKU_HEALTHCHECK }}
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          NODE_ENV: production
+          SECRET: ${{ secrets.JWT_SECRET }}

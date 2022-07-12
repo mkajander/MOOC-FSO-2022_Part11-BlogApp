@@ -71,15 +71,16 @@ describe("when the user is not logged in", () => {
 
 describe("when the user is logged in", () => {
   let token = "";
+  const user = {
+    username: "test",
+    password: "testsecret",
+  };
   beforeEach(async () => {
     await initializeTestDatabase();
     const res = await api.post("/api/login").send(user);
     token = res.body.token;
   });
-  const user = {
-    username: "test",
-    password: "testsecret",
-  };
+
   test("a blog can be added", async () => {
     const newBlog = {
       title: "Test blog",
