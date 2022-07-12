@@ -1,2 +1,5 @@
 build
 mongo.js
+client/.eslintrc.js
+client/node_modules
+client/build
