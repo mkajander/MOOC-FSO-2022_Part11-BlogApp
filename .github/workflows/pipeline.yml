@@ -22,7 +22,7 @@ jobs:
       - name: eslint
         run: npm run lint
 
-      - name: prettier --write
+      - name: prettier
         run: npm run format
 
       - name: Deploy to heroku
