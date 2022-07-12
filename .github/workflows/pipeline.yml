@@ -25,6 +25,12 @@ jobs:
       - name: prettier
         run: npm run format
 
+      - name: test
+        run: npm run test
+        env:
+          NODE_ENV: test
+          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+
       - name: Deploy to heroku
         if: ${{ github.event_name == 'push' && !contains( join(toJson(github.event.commits.*.message)), '#skip') }}
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
