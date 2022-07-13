@@ -22,9 +22,12 @@ const App = () => {
   const currentUser = useSelector((state) => state.currentUser);
   const navigate = useNavigate();
   const match = useMatch("/blogs/:id");
-  const blog = useSelector((state) =>
-    state.blogs.find((b) => b.id === match.params.id)
-  );
+  const blog = useSelector((state) => {
+    if (match) {
+      return state.blogs.find((blog) => blog.id === match.params.id);
+    }
+    return null;
+  });
   useEffect(() => {
     if (currentUser != null) {
       dispatch(CheckToken());
