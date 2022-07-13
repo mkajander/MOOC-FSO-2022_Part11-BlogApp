@@ -28,6 +28,9 @@ app.use(middleware.tokenExtractor);
 app.get("/health", (req, res) => {
   res.send("ok");
 });
+app.get("/something", (req, res) => {
+  res.send("something");
+});
 
 app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
