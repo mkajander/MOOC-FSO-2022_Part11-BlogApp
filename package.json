@@ -9,13 +9,16 @@
     "build": "cd client && npm install && npm run build && cd ..",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
-    "test:client" : "cd client && npm install && npm run test && cd ..",
+    "test:client": "cd client && npm install && npm run test && cd ..",
     "test:e2e": "cd client && npm run test:e2e && cd ..",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
   "eslintConfig": {
-    "extends": "eslint:recommended"
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ]
   },
   "author": "",
   "license": "ISC",

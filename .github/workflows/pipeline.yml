@@ -37,6 +37,9 @@ jobs:
 
       - name: e2e tests # test everything else first since these are long running
         uses: cypress-io/github-action@v2
+        env:
+            TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+            SECRET: ${{ secrets.JWT_SECRET }}
         with:
             command: npm run test:e2e
             start: npm run start:test
