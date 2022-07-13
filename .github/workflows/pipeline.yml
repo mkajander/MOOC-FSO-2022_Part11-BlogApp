@@ -64,7 +64,7 @@ jobs:
           HD_SECRET: ${{ secrets.JWT_SECRET }}
 
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [deployment_pipeline]
     if: ${{ github.event_name == 'push' && !contains( join(toJson(github.event.commits.*.message)), '#skip')}}
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +78,7 @@ jobs:
           DEFAULT_BUMP: patch
 
   discord_notification:
-    needs: [simple_deployment_pipeline, tag_release]
+    needs: [deployment_pipeline, tag_release]
     runs-on: ubuntu-latest
     steps:
       - name: Deployment success notification
