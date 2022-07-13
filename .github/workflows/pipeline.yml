@@ -25,21 +25,22 @@ jobs:
       - name: prettier for all files not ignored
         run: npm run format
 
-      - name: test backend -- if these fail testing front is pointless
-        run: npm run test
-        env:
-          NODE_ENV: test
-          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-          SECRET: ${{ secrets.JWT_SECRET }}
-
-      - name: test frontend
-        run: npm run test:client
+#      - name: test backend -- if these fail testing front is pointless
+#        run: npm run test
+#        env:
+#          NODE_ENV: test
+#          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+#          SECRET: ${{ secrets.JWT_SECRET }}
+#
+#      - name: test frontend
+#        run: npm run test:client
 
       - name: e2e tests # test everything else first since these are long running
         uses: cypress-io/github-action@v2
         env:
             TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
             SECRET: ${{ secrets.JWT_SECRET }}
+            TEST_PORT: 3003
         with:
             command: npm run test:e2e
             start: npm run start:test
@@ -62,3 +63,4 @@ jobs:
           HD_MONGODB_URI: ${{ secrets.MONGODB_URI }}
           HD_NODE_ENV: production
           HD_SECRET: ${{ secrets.JWT_SECRET }}
+
