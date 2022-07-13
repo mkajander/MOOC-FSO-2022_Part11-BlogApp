@@ -1,6 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
-import { CommentBlog, LikeBlog, RemoveBlog } from "../reducers/blogReducer";
-import { useMatch } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { ThumbUpSharp } from "@mui/icons-material";
 import {
@@ -16,13 +13,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const Blog = () => {
-  const dispatch = useDispatch();
-  const match = useMatch("/blogs/:id");
+const Blog = ({ blog, handleLikeBlog, handleRemoveBlog, handleComment }) => {
   const [comment, setComment] = useState("");
-  const blog = useSelector((state) =>
-    state.blogs.find((b) => b.id === match.params.id)
-  );
+
   if (!blog) {
     return null;
   }
@@ -33,20 +26,6 @@ const Blog = () => {
     border: "none",
     padding: "5px 10px",
     borderRadius: "5px",
-  };
-  const handleLikeBlog = (blog) => {
-    dispatch(LikeBlog(blog));
-  };
-
-  const handleRemoveBlog = (blog) => {
-    dispatch(RemoveBlog(blog));
-  };
-
-  const handleComment = (event) => {
-    event.preventDefault();
-    const comment = event.target.comment.value;
-    event.target.comment.value = "";
-    dispatch(CommentBlog(blog, comment));
   };
 
   const containerStyle = {
@@ -81,6 +60,7 @@ const Blog = () => {
             onClick={() => handleLikeBlog(blog)}
             variant="contained"
             data-cy="like"
+            data-testid="like"
           >
             <ThumbUpSharp />
           </IconButton>
@@ -110,16 +90,19 @@ const Blog = () => {
             </Button>
           </Stack>
         </form>
-        <List>
-          {blog.comments.map((comment, i = 0) => {
-            i++;
-            return (
-              <ListItem style={commentStyle} key={i}>
-                {comment}
-              </ListItem>
-            );
-          })}
-        </List>
+        {/*conditionally render if blog comments has any items*/}
+        {blog.comments && (
+          <List>
+            {blog.comments.map((comment, i = 0) => {
+              i++;
+              return (
+                <ListItem style={commentStyle} key={i}>
+                  {comment}
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
       </Card>
     </Stack>
   );

@@ -1,12 +1,17 @@
 import { useEffect } from "react";
 import Notification from "./components/Notification";
 import { useDispatch, useSelector } from "react-redux";
-import { GetBlogs } from "./reducers/blogReducer";
+import {
+  CommentBlog,
+  GetBlogs,
+  LikeBlog,
+  RemoveBlog,
+} from "./reducers/blogReducer";
 import LoginForm from "./components/Login";
 import { CheckToken, LogoutUser } from "./reducers/currentUserReducer";
 import UserList from "./components/UserList";
 import { GetUsers } from "./reducers/userReducer";
-import { Route, Routes, Link, useNavigate } from "react-router-dom";
+import { Route, Routes, Link, useNavigate, useMatch } from "react-router-dom";
 import UserDetails from "./components/UserDetails";
 import Blog from "./components/Blog";
 import BlogList from "./components/BlogList";
@@ -16,6 +21,10 @@ const App = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser);
   const navigate = useNavigate();
+  const match = useMatch("/blogs/:id");
+  const blog = useSelector((state) =>
+    state.blogs.find((b) => b.id === match.params.id)
+  );
   useEffect(() => {
     if (currentUser != null) {
       dispatch(CheckToken());
@@ -32,6 +41,20 @@ const App = () => {
   const handleLogout = async () => {
     await dispatch(LogoutUser());
     navigate("/");
+  };
+  const handleLikeBlog = (blog) => {
+    dispatch(LikeBlog(blog));
+  };
+
+  const handleRemoveBlog = (blog) => {
+    dispatch(RemoveBlog(blog));
+  };
+
+  const handleComment = (event) => {
+    event.preventDefault();
+    const comment = event.target.comment.value;
+    event.target.comment.value = "";
+    dispatch(CommentBlog(blog, comment));
   };
 
   if (currentUser == null) {
@@ -92,7 +115,17 @@ const App = () => {
         <Route path="/" element={<BlogList />} />
         <Route path="/users" element={<UserList />} />
         <Route path="/users/:id" element={<UserDetails />} />
-        <Route path="/blogs/:id" element={<Blog />} />
+        <Route
+          path="/blogs/:id"
+          element={
+            <Blog
+              blog={blog}
+              handleComment={handleComment}
+              handleLikeBlog={handleLikeBlog}
+              handleRemoveBlog={handleRemoveBlog}
+            />
+          }
+        />
       </Routes>
     </Box>
   );
